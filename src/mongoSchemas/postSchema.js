@@ -12,17 +12,13 @@ const postSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.Date,
             default: Date.now
         },
+
         usuarioId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Usuario",
             require: true
         },
-        imagenes: [{
-            url: {
-                type: mongoose.Schema.Types.String,
-                required: true
-            }
-        }],
+
         etiquetas: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Etiqueta"
@@ -30,9 +26,21 @@ const postSchema = new mongoose.Schema(
 
     },
     {
-        collection: 'posteos'
+        collection: 'posteos',
+        toJSON: {
+            virtuals: true
+        },
+        toObject: {
+            virtuals: true
+        }
     }
 );
+
+postSchema.virtual("imagenes", {
+    ref: "PostImagen",
+    localField: "_id",
+    foreignField: "postId"
+})
 
 const Post = mongoose.model('Post', postSchema);
 module.exports = Post;

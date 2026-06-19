@@ -1,0 +1,121 @@
+const Usuario = require('../mongoSchemas/usuarioSchema')
+const { mongoose } = require('../db/mongodb');
+
+const validarNickName = (req, res, next) => {
+    const { nickName } = req.body;
+
+    if (!nickName || nickName.trim() === "") {
+        return res.status(400).json({ error: "El campo nickName es obligatorio" });
+    }
+    next()
+}
+
+const verificarNickNameExistente = async (req,res,next) =>{
+    const { nickName } = req.body;
+    const existeUsuario = await Usuario.findOne({ nickName: nickName.trim() });
+
+    if (existeUsuario) {
+        return res.status(400).json({ error: `El nickName '${nickName}' ya se encuentra registrado` });
+    }
+}
+
+const verificarUsuarioExistente = async (req, res, next) =>{
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+            error: "Id inválido"
+        });
+    }
+
+    const usuario = await Usuario.findById(id);
+
+    if (!usuario) {
+        return res.status(404).json({
+            error: "Usuario no encontrado"
+        });
+    }
+
+    req.usuario = usuario;
+
+    next();
+}
+
+const verificarAutoSeguimiento = (req, res, next) => {
+    const { seguidorId, seguidoId } = req.body;
+
+    if (seguidorId === seguidoId) {
+        return res.status(400).json({
+            error: "No podés seguirte a vos mismo."
+        });
+    }
+
+    next();
+}
+
+async function verificarUsuariosSeguimiento(req, res, next) {
+
+    const { seguidorId, seguidoId } = req.body;
+
+    const seguidor = await Usuario.findById(seguidorId);
+    const seguido = await Usuario.findById(seguidoId);
+
+    if (!seguidor) {
+        return res.status(404).json({
+            error: "Usuario seguidor no encontrado."
+        });
+    }
+
+    if (!seguido) {
+        return res.status(404).json({
+            error: "Usuario seguido no encontrado."
+        });
+    }
+
+    req.seguidor = seguidor;
+    req.seguido = seguido;
+
+    next();
+}
+
+async function verificarNoSigueUsuario(req, res, next) {
+
+    const yaLoSigue = req.seguidor.seguidos.some(
+        id => id.toString() === req.seguido._id.toString()
+    );
+
+    if (yaLoSigue) {
+        return res.status(409).json({
+            error: "Ya seguís a este usuario."
+        });
+    }
+
+    next();
+}
+
+function verificarQueSigueAlUsuario(req, res, next) {
+
+    const loSigue = req.seguidor.seguidos.some(
+        id => id.toString() === req.seguido._id.toString()
+    );
+
+    if (!loSigue) {
+        return res.status(400).json({
+            error: "No seguís a este usuario."
+        });
+    }
+
+    next();
+}
+
+
+
+
+
+module.exports = {validarNickName,
+                  verificarNickNameExistente,
+                  verificarUsuarioExistente,
+                  verificarAutoSeguimiento,
+                  verificarNoSigueUsuario,
+                  verificarUsuariosSeguimiento,
+                  verificarQueSigueAlUsuario};
