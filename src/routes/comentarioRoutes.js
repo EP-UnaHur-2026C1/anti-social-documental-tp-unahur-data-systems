@@ -10,7 +10,7 @@ const { verificarComentarioExistente,
 router.get('/', comentarioController.allComentarios);
 
 //Devuelve el comentario con ID otorgado.
-router.get('/:postId', verificarComentarioExistente,
+router.get('/:comentarioId', verificarComentarioExistente,
     comentarioController.comentarioById);
 
 //Actualiza el comentario.

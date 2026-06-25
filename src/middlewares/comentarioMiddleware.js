@@ -22,6 +22,11 @@ const validarContenido = (req, res, next) => {
 const verificarComentarioExistente = async(req, res, next) => {
     try {
         const { comentarioId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(comentarioId)) {
+            return res.status(400).json({ error: "ID de comentario inválido." });
+        }
+
         const comentario = await Comentario.findById(comentarioId);
 
         if (!comentario) {

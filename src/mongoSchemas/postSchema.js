@@ -27,6 +27,7 @@ const postSchema = new mongoose.Schema(
     },
     {
         collection: 'posteos',
+        timestamps: true,
         toJSON: {
             virtuals: true
         },

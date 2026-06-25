@@ -4,7 +4,7 @@ const { mongoose } = require('../db/mongodb');
 
 const verificarEtiquetaPorId = async(req, res, next) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id || req.params.etiquetaId;
     
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({error: "Id inválido"});

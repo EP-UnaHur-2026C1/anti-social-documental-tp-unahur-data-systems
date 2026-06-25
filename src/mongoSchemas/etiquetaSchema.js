@@ -9,6 +9,8 @@ const etiquetaSchema = new mongoose.Schema({
         trim: true,
         lowercase: true
     }
+}, {
+    timestamps: true
 });
 
 const Etiqueta = mongoose.model('Etiqueta', etiquetaSchema);

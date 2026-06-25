@@ -25,7 +25,8 @@ const comentarioSchema = new mongoose.Schema(
         }
     },
     {
-        collection: "comentarios"
+        collection: "comentarios",
+        timestamps: true
     }
 );
 

@@ -12,10 +12,15 @@ const usuarioSchema = new mongoose.Schema(
         seguidos: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Usuario"
+        }],
+        seguidores: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Usuario"
         }]
     },
     {
-        collection: 'usuarios'
+        collection: 'usuarios',
+        timestamps: true
     }
 );
 

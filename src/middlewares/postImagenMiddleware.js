@@ -1,4 +1,4 @@
-const postImagen = require('../mongoSchemas/postImagenSchema')
+const PostImagen = require('../mongoSchemas/postImagenSchema')
 const { mongoose } = require('../db/mongodb');
 
 const validarUrlImagen = (req, res, next) => {
@@ -15,6 +15,11 @@ const validarUrlImagen = (req, res, next) => {
 const verificarImagenExistente = async(req, res, next) => {
     try {
         const { imagenId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(imagenId)) {
+            return res.status(400).json({ error: "ID de imagen inválido." });
+        }
+
         const imagen = await PostImagen.findById(imagenId);
 
         if (!imagen) {

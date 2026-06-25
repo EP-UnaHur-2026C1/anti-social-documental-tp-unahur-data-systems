@@ -1,0 +1,596 @@
+openapi: 3.0.0
+info:
+  title: Anti-Social API
+  version: 1.0.0
+  description: API de UnaHur Anti-Social Net
+servers:
+  - url: http://localhost:3050
+tags:
+  - name: Usuarios
+  - name: Posts
+  - name: Comentarios
+  - name: Etiquetas
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        _id:
+          type: string
+        nickName:
+          type: string
+        seguidos:
+          type: array
+          items:
+            type: string
+        seguidores:
+          type: array
+          items:
+            type: string
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+        descripcion:
+          type: string
+        usuarioId:
+          type: string
+        etiquetas:
+          type: array
+          items:
+            type: string
+    Comentario:
+      type: object
+      properties:
+        _id:
+          type: string
+        contenido:
+          type: string
+        usuarioId:
+          type: string
+        postId:
+          type: string
+    Etiqueta:
+      type: object
+      properties:
+        _id:
+          type: string
+        nombre:
+          type: string
+
+paths:
+  /api/usuarios:
+    get:
+      tags: [Usuarios]
+      summary: Obtener todos los usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+    post:
+      tags: [Usuarios]
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nickName]
+              properties:
+                nickName:
+                  type: string
+      responses:
+        '201':
+          description: Usuario creado
+
+  /api/usuarios/{id}:
+    get:
+      tags: [Usuarios]
+      summary: Obtener usuario por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario encontrado
+    put:
+      tags: [Usuarios]
+      summary: Actualizar usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nickName]
+              properties:
+                nickName:
+                  type: string
+      responses:
+        '200':
+          description: Usuario actualizado
+    delete:
+      tags: [Usuarios]
+      summary: Eliminar usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado
+
+  /api/usuarios/seguir:
+    post:
+      tags: [Usuarios]
+      summary: Seguir a un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [seguidorId, seguidoId]
+              properties:
+                seguidorId:
+                  type: string
+                seguidoId:
+                  type: string
+      responses:
+        '200':
+          description: Seguimiento creado
+
+  /api/usuarios/dejar-seguir:
+    post:
+      tags: [Usuarios]
+      summary: Dejar de seguir a un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [seguidorId, seguidoId]
+              properties:
+                seguidorId:
+                  type: string
+                seguidoId:
+                  type: string
+      responses:
+        '200':
+          description: Seguimiento eliminado
+
+  /api/usuarios/{id}/feed:
+    get:
+      tags: [Usuarios]
+      summary: Obtener feed de publicaciones de usuarios seguidos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feed de usuario
+
+  /api/posts:
+    get:
+      tags: [Posts]
+      summary: Obtener todos los posts
+      responses:
+        '200':
+          description: Lista de posts
+    post:
+      tags: [Posts]
+      summary: Crear post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [descripcion, usuarioId]
+              properties:
+                descripcion:
+                  type: string
+                usuarioId:
+                  type: string
+      responses:
+        '201':
+          description: Post creado
+
+  /api/posts/{postId}:
+    get:
+      tags: [Posts]
+      summary: Obtener post por ID
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post encontrado
+    put:
+      tags: [Posts]
+      summary: Actualizar post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [descripcion]
+              properties:
+                descripcion:
+                  type: string
+      responses:
+        '200':
+          description: Post actualizado
+    delete:
+      tags: [Posts]
+      summary: Eliminar post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post eliminado
+
+  /api/posts/{postId}/etiquetas:
+    post:
+      tags: [Posts]
+      summary: Asociar etiqueta a post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre]
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Etiqueta asociada
+
+  /api/posts/{postId}/etiquetas/{etiquetaId}:
+    delete:
+      tags: [Posts]
+      summary: Desasociar etiqueta de post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: etiquetaId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Etiqueta desasociada
+
+  /api/posts/{postId}/imagenes:
+    get:
+      tags: [Posts]
+      summary: Obtener todas las imagenes de un post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de imagenes
+    post:
+      tags: [Posts]
+      summary: Agregar imagen por URL al post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url:
+                  type: string
+      responses:
+        '201':
+          description: Imagen agregada
+
+  /api/posts/{postId}/imagenes/upload:
+    post:
+      tags: [Posts]
+      summary: Subir archivo de imagen y asociarlo al post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Imagen subida
+
+  /api/posts/{postId}/imagenes/{imagenId}:
+    get:
+      tags: [Posts]
+      summary: Obtener imagen de post por ID
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: imagenId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imagen encontrada
+    put:
+      tags: [Posts]
+      summary: Actualizar imagen de post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: imagenId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url:
+                  type: string
+      responses:
+        '200':
+          description: Imagen actualizada
+    delete:
+      tags: [Posts]
+      summary: Eliminar imagen de post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: imagenId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imagen eliminada
+
+  /api/posts/{postId}/comentarios:
+    post:
+      tags: [Comentarios]
+      summary: Crear comentario en un post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contenido, usuarioId]
+              properties:
+                contenido:
+                  type: string
+                usuarioId:
+                  type: string
+      responses:
+        '201':
+          description: Comentario creado
+
+  /api/comentarios:
+    get:
+      tags: [Comentarios]
+      summary: Obtener todos los comentarios
+      responses:
+        '200':
+          description: Lista de comentarios
+
+  /api/comentarios/{comentarioId}:
+    get:
+      tags: [Comentarios]
+      summary: Obtener comentario por ID
+      parameters:
+        - in: path
+          name: comentarioId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario encontrado
+    put:
+      tags: [Comentarios]
+      summary: Actualizar comentario
+      parameters:
+        - in: path
+          name: comentarioId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [contenido]
+              properties:
+                contenido:
+                  type: string
+      responses:
+        '200':
+          description: Comentario actualizado
+    delete:
+      tags: [Comentarios]
+      summary: Eliminar comentario
+      parameters:
+        - in: path
+          name: comentarioId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario eliminado
+
+  /api/etiquetas:
+    get:
+      tags: [Etiquetas]
+      summary: Obtener todas las etiquetas
+      responses:
+        '200':
+          description: Lista de etiquetas
+    post:
+      tags: [Etiquetas]
+      summary: Crear etiqueta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre]
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '201':
+          description: Etiqueta creada
+
+  /api/etiquetas/{id}:
+    get:
+      tags: [Etiquetas]
+      summary: Obtener etiqueta por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Etiqueta encontrada
+    put:
+      tags: [Etiquetas]
+      summary: Actualizar etiqueta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre]
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Etiqueta actualizada
+    delete:
+      tags: [Etiquetas]
+      summary: Eliminar etiqueta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Etiqueta eliminada
+
+  /api/etiquetas/{etiquetaId}/posts:
+    get:
+      tags: [Etiquetas]
+      summary: Obtener posts asociados a una etiqueta
+      parameters:
+        - in: path
+          name: etiquetaId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de posts asociados

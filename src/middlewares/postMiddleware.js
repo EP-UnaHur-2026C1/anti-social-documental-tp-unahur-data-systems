@@ -20,6 +20,10 @@ const verificarPostExistente = async (req, res, next) => {
     try {
         const { postId } = req.params;
 
+        if (!mongoose.Types.ObjectId.isValid(postId)) {
+            return res.status(400).json({ error: "ID de post inválido." });
+        }
+
         const post = await Post.findById(postId);
 
         if (!post) {

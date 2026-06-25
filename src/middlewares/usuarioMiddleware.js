@@ -13,10 +13,11 @@ const validarNickName = (req, res, next) => {
 const verificarNickNameExistente = async (req, res, next) => {
     try {
         const { nickName } = req.body;
+        const usuarioIdActual = req.params.id;
 
         const existeUsuario = await Usuario.findOne({nickName: nickName.trim()});
 
-        if (existeUsuario) {
+        if (existeUsuario && existeUsuario._id.toString() !== usuarioIdActual) {
             return res.status(400).json({
                 error: `El nickName '${nickName}' ya se encuentra registrado`
             });
@@ -29,7 +30,13 @@ const verificarNickNameExistente = async (req, res, next) => {
 };
 
 const verificarUsuarioExistente = async (req, res, next) =>{
-    const { id } = req.params;
+    const id = req.params.id || req.params.usuarioId || req.body.usuarioId || req.body.id;
+
+    if (!id) {
+        return res.status(400).json({
+            error: "Se requiere un id de usuario"
+        });
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({

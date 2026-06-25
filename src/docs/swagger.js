@@ -14,7 +14,7 @@ const swaggerSpec = swaggerJSDoc({
       },
     ],
   },
-  apis: ["./src/routes/*.js"],
+  apis: ["./src/docs/openapi.yaml"],
 });
 
 module.exports = swaggerSpec;
