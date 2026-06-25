@@ -1,11 +1,11 @@
 const { mongoose } = require('../db/mongodb');
-const { Schema, mongo, SchemaType } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const usuarioSchema = new mongoose.Schema(
     {
         nickName: {
             type: Schema.Types.String,
-            require: [true, "El nickName es obligatorio!"],
+            required: [true, "El nickName es obligatorio!"],
             unique: true,
             trim: true
         },

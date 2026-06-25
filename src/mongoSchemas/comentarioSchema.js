@@ -5,7 +5,7 @@ const comentarioSchema = new mongoose.Schema(
     {
         contenido: {
             type: Schema.Types.String,
-            require: true
+            required: true
         },
 
         fechaComentario: {
@@ -16,36 +16,38 @@ const comentarioSchema = new mongoose.Schema(
         usuarioId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Usuario",
-            require: true
+            required: true
         },
         postId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Post",
-            require: true
+            required: true
         }
     },
+    {
+        collection: "comentarios"
+    }
 );
 
 comentarioSchema.set("toJSON", {
     virtuals: true,
-    transform: (_,ret)=>{
+    transform: (_, ret) => {
         delete ret.__v
-        delete ret._id
     }
 });
 
 
 comentarioSchema.virtual("visible").get(function () {
 
-  const mesesConfigurados = Number(process.env.TIEMPO_MAX_COMENTARIO) || 6;
-  
-  const fechaLimite = new Date();
+    const mesesConfigurados = Number(process.env.TIEMPO_MAX_COMENTARIO) || 6;
 
-  fechaLimite.setMonth(
-    fechaLimite.getMonth() - mesesConfigurados
-  );
+    const fechaLimite = new Date();
 
-  return this.fechaComentario >= fechaLimite;
+    fechaLimite.setMonth(
+        fechaLimite.getMonth() - mesesConfigurados
+    );
+
+    return this.fechaComentario >= fechaLimite;
 });
 
 const Comentario = mongoose.model('Comentario', comentarioSchema);

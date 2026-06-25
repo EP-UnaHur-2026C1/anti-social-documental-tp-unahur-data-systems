@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const MONGO_URL = process.env.MONGO_URL ?? 'mongodb://root:example@localhost:27017/libros?authSource=admin'
+const MONGO_URL = process.env.MONGO_URL ?? 'mongodb://admin:admin123@localhost:27017/antisocial?authSource=admin'
 
-let isConnected
+let isConnected = false;
 
 const connectToDatabase = async() => {
     if(!isConnected){
@@ -11,4 +11,4 @@ const connectToDatabase = async() => {
     }
 }
 
-module.exports = { mongoose, connectToDatabase }
+module.exports = { mongoose, connectToDatabase };

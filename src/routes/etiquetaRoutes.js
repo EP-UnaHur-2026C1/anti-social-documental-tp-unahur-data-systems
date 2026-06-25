@@ -4,9 +4,12 @@ const router = express.Router();
 const etiquetaController = require("../controllers/etiquetaController");
 
 const {
+    verificarEtiquetaPorId,
     validarNombreEtiqueta,
     verificarEtiquetaExistente,
-    verificarEtiquetaPorId
+    verificarEtiquetaYPost,
+    verificarEtiquetaNoAsociada,
+    verificarEtiquetaAsociada
 } = require("../middlewares/etiquetaMiddleware");
 
 // Obtener todas las etiquetas
@@ -29,10 +32,12 @@ router.put("/:id",  verificarEtiquetaPorId,
 router.delete("/:id", verificarEtiquetaPorId, etiquetaController.borrarEtiqueta);
 
 // Asociar etiqueta a un post
-router.post("/:etiquetaId/posts/:postId", etiquetaController.asociarPost);
+// router.post("/:etiquetaId/posts/:postId", verificarEtiquetaYPost, verificarEtiquetaNoAsociada, etiquetaController.asociarPost);
 
-// Desasociar etiqueta de un post
-router.delete("/:etiquetaId/posts/:postId", etiquetaController.desasociarPost);
+// // Desasociar etiqueta de un post
+// router.delete("/:etiquetaId/posts/:postId", verificarEtiquetaYPost, verificarEtiquetaAsociada, etiquetaController.desasociarPost);
 
 // Obtener todos los posts de una etiqueta
-router.get("/:etiquetaId/posts", etiquetaController.obtenerPostsDeEtiqueta);
+router.get("/:etiquetaId/posts", verificarEtiquetaPorId, etiquetaController.obtenerPostsDeEtiqueta);
+
+module.exports = router;

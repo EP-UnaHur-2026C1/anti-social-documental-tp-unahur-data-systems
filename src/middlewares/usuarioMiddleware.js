@@ -10,14 +10,23 @@ const validarNickName = (req, res, next) => {
     next()
 }
 
-const verificarNickNameExistente = async (req,res,next) =>{
-    const { nickName } = req.body;
-    const existeUsuario = await Usuario.findOne({ nickName: nickName.trim() });
+const verificarNickNameExistente = async (req, res, next) => {
+    try {
+        const { nickName } = req.body;
 
-    if (existeUsuario) {
-        return res.status(400).json({ error: `El nickName '${nickName}' ya se encuentra registrado` });
+        const existeUsuario = await Usuario.findOne({nickName: nickName.trim()});
+
+        if (existeUsuario) {
+            return res.status(400).json({
+                error: `El nickName '${nickName}' ya se encuentra registrado`
+            });
+        }
+        next();
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
-}
+};
 
 const verificarUsuarioExistente = async (req, res, next) =>{
     const { id } = req.params;
@@ -53,8 +62,7 @@ const verificarAutoSeguimiento = (req, res, next) => {
     next();
 }
 
-async function verificarUsuariosSeguimiento(req, res, next) {
-
+const verificarUsuariosSeguimiento = async(req, res, next) => {
     const { seguidorId, seguidoId } = req.body;
 
     const seguidor = await Usuario.findById(seguidorId);
@@ -78,8 +86,7 @@ async function verificarUsuariosSeguimiento(req, res, next) {
     next();
 }
 
-async function verificarNoSigueUsuario(req, res, next) {
-
+const verificarNoSigueUsuario = async(req, res, next) =>{
     const yaLoSigue = req.seguidor.seguidos.some(
         id => id.toString() === req.seguido._id.toString()
     );
@@ -93,7 +100,7 @@ async function verificarNoSigueUsuario(req, res, next) {
     next();
 }
 
-function verificarQueSigueAlUsuario(req, res, next) {
+const verificarQueSigueAlUsuario = (req, res, next) => {
 
     const loSigue = req.seguidor.seguidos.some(
         id => id.toString() === req.seguido._id.toString()

@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema(
     {
         descripcion: {
             type: Schema.Types.String,
-            require: true
+            required: true
         },
 
         fechaCreacion: {
@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema(
         usuarioId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Usuario",
-            require: true
+            required: true
         },
 
         etiquetas: [{

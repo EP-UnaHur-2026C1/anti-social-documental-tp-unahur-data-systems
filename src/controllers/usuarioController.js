@@ -1,7 +1,8 @@
-const { Usuario, Post } = require('../mongoSchemas');
+const Usuario = require('../mongoSchemas/usuarioSchema');
+const Post = require('../mongoSchemas/postSchema');
 
 module.exports = {
-  // 1. Obtener todos los usuarios
+  // Obtener todos los usuarios
   async allUsuarios(req, res) {
     try {
       const usuarios = await Usuario.find();
@@ -11,7 +12,7 @@ module.exports = {
     }
   },
 
-  // 2. Obtener un usuario por ID
+  // Obtener un usuario por ID
   async usuarioById(req, res) {
     try {
       const usuario = req.usuario;
@@ -21,7 +22,7 @@ module.exports = {
     }
   },
 
-  // 3. Crear un nuevo usuario (Validando unicidad de nickName)
+  // Crear un nuevo usuario (Validando unicidad de nickName)
   async crearUsuario(req, res) {
     try {
       const { nickName } = req.body;
@@ -33,7 +34,7 @@ module.exports = {
     }
   },
 
-  // 4. Actualizar un usuario
+  // Actualizar un usuario
   async actualizarUsuario(req, res) {
     try {
       const { nickName } = req.body;
@@ -48,7 +49,7 @@ module.exports = {
     }
   },
 
-  // 5. Eliminar un usuario
+  // Eliminar un usuario
   async borrarUsuario(req, res) {
     try {
       const usuario = req.usuario;
@@ -60,11 +61,9 @@ module.exports = {
     }
   },
 
-  // ==========================================
-  // FUNCIONALIDADES DE RED SOCIAL (NUEVO)
-  // ==========================================
+ //Funciones de Red Social.
 
-  // 6. Seguir a un usuario
+  // Seguir a un usuario
   async seguirUsuario(req, res) {
     try {
 
@@ -72,18 +71,14 @@ module.exports = {
 
       await req.seguidor.save();
 
-      return res.status(200).json({
-        message: `Ahora seguís a '${req.seguido.nickName}' correctamente.`
-      });
+      return res.status(200).json({message: `Ahora seguís a '${req.seguido.nickName}' correctamente.`});
 
     } catch (error) {
-      return res.status(500).json({
-        error: "Error al seguir usuario: " + error.message
-      });
+      return res.status(500).json({error: "Error al seguir usuario: " + error.message});
     }
   },
 
-  // 7. Dejar de seguir a un usuario
+  // Dejar de seguir a un usuario
   async dejarDeSeguirUsuario(req, res) {
     try {
 
@@ -91,18 +86,14 @@ module.exports = {
 
       await req.seguidor.save();
 
-      return res.status(200).json({
-        message: `Dejaste de seguir a '${req.seguido.nickName}'.`
-      });
+      return res.status(200).json({message: `Dejaste de seguir a '${req.seguido.nickName}'.`});
 
     } catch (error) {
-      return res.status(500).json({
-        error: "Error al dejar de seguir usuario: " + error.message
-      });
+      return res.status(500).json({error: "Error al dejar de seguir usuario: " + error.message});
     }
   },
 
-  // 8. Obtener el Feed personalizado (Publicaciones de los usuarios seguidos)
+  // Obtener el Feed personalizado (Publicaciones de los usuarios seguidos)
   async getFeed(req, res) {
     try {
       const usuario = req.usuario; // ya cargado por verificarUsuarioExistente
@@ -119,9 +110,7 @@ module.exports = {
 
       return res.status(200).json(feed);
     } catch (error) {
-      return res.status(500).json({
-        error: "Error al cargar el feed: " + error.message
-      });
+      return res.status(500).json({error: "Error al cargar el feed: " + error.message});
     }
   }
 };
