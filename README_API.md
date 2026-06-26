@@ -107,9 +107,6 @@ docker compose down
 - `POST /api/posts/:postId/etiquetas`
 - `DELETE /api/posts/:postId/etiquetas/:etiquetaId`
 - `POST /api/posts/:postId/imagenes`
-- `GET /api/posts/:postId/imagenes`
-- `GET /api/posts/:postId/imagenes/:imagenId`
-- `PUT /api/posts/:postId/imagenes/:imagenId`
 - `POST /api/posts/:postId/imagenes/upload`
 - `DELETE /api/posts/:postId/imagenes/:imagenId`
 

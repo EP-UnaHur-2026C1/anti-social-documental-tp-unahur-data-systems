@@ -97,7 +97,7 @@ test('debe crear post y comentario y mostrar el comentario en GET /api/posts/:po
   assert.equal(getPostRes.body.comentarios.some((c) => c.contenido === 'Comentario visible'), true);
 });
 
-test('debe soportar CRUD basico de imagenes por URL en un post', async () => {
+test('debe crear/eliminar imagen y verla en GET /api/posts/:postId', async () => {
   const nickName = unique('img-owner');
 
   await request(app)
@@ -125,17 +125,10 @@ test('debe soportar CRUD basico de imagenes por URL en un post', async () => {
   assert.ok(imagenId);
   created.imagenes.push(imagenId);
 
-  const listRes = await request(app).get(`/api/posts/${postId}/imagenes`);
-  assert.equal(listRes.statusCode, 200);
-  assert.equal(Array.isArray(listRes.body), true);
-  assert.equal(listRes.body.some((img) => img._id === imagenId), true);
-
-  const updateRes = await request(app)
-    .put(`/api/posts/${postId}/imagenes/${imagenId}`)
-    .send({ url: 'https://example.com/imagen-actualizada.jpg' });
-
-  assert.equal(updateRes.statusCode, 200);
-  assert.equal(updateRes.body.url, 'https://example.com/imagen-actualizada.jpg');
+  const postWithImagesRes = await request(app).get(`/api/posts/${postId}`);
+  assert.equal(postWithImagesRes.statusCode, 200);
+  assert.equal(Array.isArray(postWithImagesRes.body.imagenes), true);
+  assert.equal(postWithImagesRes.body.imagenes.some((img) => img._id === imagenId), true);
 
   const deleteRes = await request(app)
     .delete(`/api/posts/${postId}/imagenes/${imagenId}`);

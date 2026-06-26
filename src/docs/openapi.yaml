@@ -305,18 +305,6 @@ paths:
           description: Etiqueta desasociada
 
   /api/posts/{postId}/imagenes:
-    get:
-      tags: [Posts]
-      summary: Obtener todas las imagenes de un post
-      parameters:
-        - in: path
-          name: postId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Lista de imagenes
     post:
       tags: [Posts]
       summary: Agregar imagen por URL al post
@@ -365,50 +353,6 @@ paths:
           description: Imagen subida
 
   /api/posts/{postId}/imagenes/{imagenId}:
-    get:
-      tags: [Posts]
-      summary: Obtener imagen de post por ID
-      parameters:
-        - in: path
-          name: postId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: imagenId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Imagen encontrada
-    put:
-      tags: [Posts]
-      summary: Actualizar imagen de post
-      parameters:
-        - in: path
-          name: postId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: imagenId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [url]
-              properties:
-                url:
-                  type: string
-      responses:
-        '200':
-          description: Imagen actualizada
     delete:
       tags: [Posts]
       summary: Eliminar imagen de post

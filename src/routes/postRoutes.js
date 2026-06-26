@@ -62,6 +62,11 @@ router.post('/:postId/imagenes', validarPostId, verificarPostExistente,
         validarUrlImagen,
         postController.agregarImagen);
 
+//Sube una imagen al servidor y la asocia al post.
+router.post('/:postId/imagenes/upload', validarPostId, verificarPostExistente,
+        uploadMiddleware.single('imagen'),
+        postController.subirImagen);
+
 
 //Eliminar una imagen del post.
 router.delete('/:postId/imagenes/:imagenId', validarPostId,

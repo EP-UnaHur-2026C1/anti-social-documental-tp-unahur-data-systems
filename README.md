@@ -37,7 +37,7 @@ Los sponsors definieron los siguientes nombres y descripciones para las entidade
 
 1. **Modelado de Datos**
 
-   - Diseñar el modelo documental que represtente todas las entidades definidas por los sponsor del proyecto. Queda a su criterio si usan relaciones embebidas o relaciones referenciadas a otros documentos.
+   - Diseñar el modelo documental que represente todas las entidades definidas por los sponsor del proyecto. Queda a su criterio si usan relaciones embebidas o relaciones referenciadas a otros documentos.
 
 ### Ejemplo referenciadas
 
@@ -51,7 +51,7 @@ Los sponsors definieron los siguientes nombres y descripciones para las entidade
 
    - Desarrollar las validaciones necesarias para asegurar la integridad de los datos (schemas, validaciones de integridad referencial).
 
-   - Desarrollar las funciones controladoras con una única responsabiliad evitando realizar comprobaciones innecesarias en esta parte del código.
+   - Desarrollar las funciones controladoras con una única responsabilidad evitando realizar comprobaciones innecesarias en esta parte del código.
 
 3. **Configuración y Portabilidad**
 
@@ -69,7 +69,7 @@ Los sponsors definieron los siguientes nombres y descripciones para las entidade
 
 # Bonus
 
-- Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
+- Hace el upload de las imagenes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
 - ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
 - Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
 
