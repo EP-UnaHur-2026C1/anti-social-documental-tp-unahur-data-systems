@@ -65,7 +65,7 @@ module.exports = {
     try {
       const nuevoPost = await Post.create({
         descripcion: req.body.descripcion,
-        usuarioId: req.body.usuarioId || req.usuario._id
+        usuarioId: req.usuario._id
       });
 
       clearCache();
@@ -111,53 +111,6 @@ module.exports = {
   async agregarImagen(req, res) {
     try {
       const nuevaImagen = await PostImagen.create({
-        url: req.body.url,
-        postId: req.post._id
-      });
-
-      clearCache();
-
-      return res.status(201).json(nuevaImagen);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-  async allImagenes(req, res) {
-    try {
-      const imagenes = await PostImagen.find({ postId: req.post._id });
-      return res.status(200).json(imagenes);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-  async imagenById(req, res) {
-    try {
-      return res.status(200).json(req.imagen);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-  async actualizarImagen(req, res) {
-    try {
-      req.imagen.url = req.body.url.trim();
-      await req.imagen.save();
-      clearCache();
-      return res.status(200).json(req.imagen);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-  async subirImagen(req, res) {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ error: "No se recibió ninguna imagen." });
-      }
-
-      const nuevaImagen = await PostImagen.create({
         url: req.filePath,
         postId: req.post._id
       });
@@ -169,6 +122,7 @@ module.exports = {
       return res.status(500).json({ error: error.message });
     }
   },
+
 
   async eliminarImagen(req, res) {
     try {

@@ -62,29 +62,6 @@ router.post('/:postId/imagenes', validarPostId, verificarPostExistente,
         validarUrlImagen,
         postController.agregarImagen);
 
-//Obtiene todas las imagenes de un post.
-router.get('/:postId/imagenes', validarPostId, verificarPostExistente,
-        postController.allImagenes);
-
-//Obtiene una imagen de un post por ID.
-router.get('/:postId/imagenes/:imagenId', validarPostId,
-        verificarPostExistente,
-        verificarImagenExistente,
-        verificarImagenPerteneceAlPost,
-        postController.imagenById);
-
-//Actualiza una imagen del post.
-router.put('/:postId/imagenes/:imagenId', validarPostId,
-        verificarPostExistente,
-        verificarImagenExistente,
-        verificarImagenPerteneceAlPost,
-        validarUrlImagen,
-        postController.actualizarImagen);
-
-//Sube una imagen al servidor y la asocia al post.
-router.post('/:postId/imagenes/upload', validarPostId, verificarPostExistente,
-        uploadMiddleware.single('imagen'),
-        postController.subirImagen);
 
 //Eliminar una imagen del post.
 router.delete('/:postId/imagenes/:imagenId', validarPostId,
