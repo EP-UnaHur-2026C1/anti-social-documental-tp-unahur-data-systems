@@ -108,22 +108,6 @@ module.exports = {
   },
 
 
-  async agregarImagen(req, res) {
-    try {
-      const nuevaImagen = await PostImagen.create({
-        url: req.body.url,
-        postId: req.post._id
-      });
-
-      clearCache();
-
-      return res.status(201).json(nuevaImagen);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-
   async subirImagen(req, res) {
     try {
       if (!req.file) {

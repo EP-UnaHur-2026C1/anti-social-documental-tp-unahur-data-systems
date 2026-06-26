@@ -1,17 +1,17 @@
 const PostImagen = require('../mongoSchemas/postImagenSchema')
 const { mongoose } = require('../db/mongodb');
 
-const validarUrlImagen = (req, res, next) => {
-    const { url } = req.body;
-    if (!url) {
-        return res.status(400).json({ error: "La URL es obligatoria." });
-    }
+// const validarUrlImagen = (req, res, next) => {
+//     const { url } = req.body;
+//     if (!url) {
+//         return res.status(400).json({ error: "La URL es obligatoria." });
+//     }
 
-    if (typeof url !== "string") {
-        return res.status(400).json({ error: "La URL debe ser texto." });
-    }
-    next();
-}
+//     if (typeof url !== "string") {
+//         return res.status(400).json({ error: "La URL debe ser texto." });
+//     }
+//     next();
+// }
 const verificarImagenExistente = async(req, res, next) => {
     try {
         const { imagenId } = req.params;
@@ -43,7 +43,7 @@ const verificarImagenPerteneceAlPost = (req, res, next) => {
 }
 
 module.exports = {
-    validarUrlImagen,
+    // validarUrlImagen,
     verificarImagenPerteneceAlPost,
     verificarImagenExistente
 }

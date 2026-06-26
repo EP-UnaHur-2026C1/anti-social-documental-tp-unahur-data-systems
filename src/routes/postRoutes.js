@@ -57,13 +57,9 @@ router.delete('/:postId/etiquetas/:etiquetaId', validarPostId, verificarPostExis
         verificarEtiquetaAsociada,
         postController.desasociarEtiqueta);
 
-//Agrega una imagen al post.
-router.post('/:postId/imagenes', validarPostId, verificarPostExistente,
-        validarUrlImagen,
-        postController.agregarImagen);
 
 //Sube una imagen al servidor y la asocia al post.
-router.post('/:postId/imagenes/upload', validarPostId, verificarPostExistente,
+router.post('/:postId/imagenes/upload' , validarPostId, verificarPostExistente,
         uploadMiddleware.single('imagen'),
         postController.subirImagen);
 
